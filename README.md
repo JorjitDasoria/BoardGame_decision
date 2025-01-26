@@ -36,7 +36,9 @@ Follow these steps to set up and run SwipeBoard on your local machine:
 
 
 
-![Screenshot](https://raw.githubusercontent.com/username/repository/main/images/image1.png)
+##Youtube URL link (Made by my teammate "Rush")
+
+https://www.youtube.com/watch?v=qf8fNqQJBAA&authuser=0
 
 
    

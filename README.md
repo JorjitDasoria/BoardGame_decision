@@ -20,3 +20,22 @@ Follow these steps to set up and run SwipeBoard on your local machine:
 1. Clone this repository:  
    ```bash  
    git clone https://github.com/yourusername/swipeboard.git  
+
+
+2. Navigate to the project directory:
+   ```bash
+   cd swipeboard  
+3. Install dependencies (ensure you have Python installed):
+   ```bash
+   pip install -r requirements.txt  
+
+4. Run the Flask development server:
+   ```bash
+   flask run
+5. Open your browser and visit http://127.0.0.1:5000 to start swiping!
+
+
+
+   
+
+   

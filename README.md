@@ -35,6 +35,9 @@ Follow these steps to set up and run SwipeBoard on your local machine:
 5. Open your browser and visit http://127.0.0.1:5000 to start swiping!
 
 
+![Alt Text]("C:\Python\plymhack3\plymhack3\Screenshot 2025-01-26 011535.png")
+
+
 
    
 

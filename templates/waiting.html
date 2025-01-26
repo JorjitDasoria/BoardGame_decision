@@ -1,0 +1,13 @@
+<!-- templates/waiting.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="waiting-room">
+    <h2>Waiting for everyone to finish...</h2>
+    <p>{{ finished }}/{{ total }} players finished</p>
+    {% if finished == total %}
+    <meta http-equiv="refresh" content="2;url={{ url_for('show_matches') }}">
+    {% else %}
+    <meta http-equiv="refresh" content="5">
+    {% endif %}
+</div>
+{% endblock %}

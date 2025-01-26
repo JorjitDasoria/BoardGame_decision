@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f0f0f0;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .card {
+        width: 400px;
+        padding: 30px;
+        border-radius: 30px;
+        background: #872341;
+        box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.5em;
+        color: #f9f9f9;
+        margin-bottom: 20px;
+    }
+
+    .genre-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+        width: 100%;
+    }
+
+    .genre-item {
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #e17564;
+        color: #f9f9f9;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .genre-item input {
+        display: none; /* Hide the checkbox */
+    }
+
+    .genre-item label {
+        display: block;
+        cursor: pointer;
+        width: 100%; /* Ensure the label spans the full button */
+        height: 100%;
+    }
+
+    .genre-item:hover {
+        background-color: #be3144;
+    }
+
+    /* Add styling for when a genre is selected */
+    .genre-item input:checked + label {
+        background-color: #e5b60d; /* Change background colour for selected genres */
+        color: #ffffff; /* Make text white for better contrast */
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2); /* Add shadow effect for emphasis */
+        font-weight: bold; /* Optional: Make the text bold */
+        
+    }
+
+    .custom-button {
+        padding: 10px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        border: 0;
+        background-color: #e17564;
+        box-shadow: rgba(214, 214, 214, 0.05) 0 0 8px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-size: 15px;
+        transition: all 0.5s ease;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        width: 100%;
+    }
+
+    .custom-button:hover {
+        letter-spacing: 3px;
+        background-color: #be3144;
+    }
+
+    .custom-button:active {
+        transform: translateY(5px);
+        transition: 100ms;
+    }
+</style>
+
+
+<div class="card">
+    <form method="post" class="genre-form">
+        <h2>Select 3 Favourite Genres</h2>
+        <div class="genre-grid">
+            {% for genre in genres %}
+            <div class="genre-item">
+                <input 
+                    type="checkbox" 
+                    name="genres" 
+                    value="{{ genre.id }}" 
+                    id="genre{{ genre.id }}" 
+                    onclick="limitChecks(this, 3)">
+                <label for="genre{{ genre.id }}">{{ genre.name }}</label>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="custom-button">Continue</button>
+    </form>
+</div>
+
+<script>
+function limitChecks(checkbox, limit) {
+    const checkedCount = document.querySelectorAll('input[name="genres"]:checked').length;
+    if (checkedCount > limit) {
+        checkbox.checked = false; // Uncheck if limit is exceeded
+        alert(`You can only select up to ${limit} genres.`);
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,35 @@
+<!-- templates/matches.html -->
+{% extends "base.html" %}
+{% block content %}
+<h1>Your Group Matches!</h1>
+<div class="matches-container">
+    {% for game in matches %}
+    <div class="match-card">
+        <img src="{{ game.image_url }}" alt="{{ game.name }}">
+        <h3>{{ game.name }}</h3>
+        <p>{{ game.description }}</p>
+        <p>Players: {{ game.min_players }}-{{ game.max_players }}</p>
+        <p>Playtime: {{ game.avg_playtime }} minutes</p>
+    </div>
+    {% else %}
+    <p>No matches found yet. Keep swiping!</p>
+    {% endfor %}
+</div>
+
+<style>
+.matches-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+.match-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+}
+.match-card img {
+    max-width: 100%;
+    height: auto;
+}
+</style>
+{% endblock %}

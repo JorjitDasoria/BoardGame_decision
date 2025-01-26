@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="swipe-container">
+    {% if games %}
+        <div class="card-container">
+            <div class="card draggable" id="game-card">
+                <div class="content">
+                    <div class="front">
+                        <img src="{{ games[0].image_url }}" alt="{{ games[0].name }}">
+                    </div>
+                    <div class="back">
+                        <div class="back-content">
+                            <h2>{{ games[0].name }}</h2>
+                            <p class="description">{{ games[0].description }}</p>
+                            <div class="game-stats">
+                                <p>Players: {{ games[0].min_players }}-{{ games[0].max_players }}</p>
+                                <p>Average Playtime: {{ games[0].avg_playtime }} minutes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <button class="flip-button" onclick="toggleCard()">Flip Card</button>
+            <a href="{{ url_for('end_session') }}" class="end-session-button">End Session</a>
+        </div>
+        {% else %}
+        <p>All done! Waiting for others...</p>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const card = document.getElementById('game-card');
+    let startX, startY, currentX, currentY;
+    let isDragging = false;
+    const swipeThreshold = window.innerWidth * 0.15;
+
+    card.addEventListener('touchstart', handleStart);
+    card.addEventListener('touchmove', handleMove);
+    card.addEventListener('touchend', handleEnd);
+    card.addEventListener('mousedown', handleStart);
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('mouseup', handleEnd);
+
+    function handleStart(e) {
+        isDragging = true;
+        startX = (e.type === 'mousedown' ? e.clientX : e.touches[0].clientX) - card.offsetLeft;
+        startY = (e.type === 'mousedown' ? e.clientY : e.touches[0].clientY) - card.offsetTop;
+        card.style.transition = 'none';
+    }
+
+    function handleMove(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        currentX = (e.type === 'mousemove' ? e.clientX : e.touches[0].clientX) - startX;
+        currentY = (e.type === 'mousemove' ? e.clientY : e.touches[0].clientY) - startY;
+
+        const rotation = currentX / 10;
+        const opacity = Math.min(Math.abs(currentX) / swipeThreshold, 1);
+        
+        card.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotation}deg)`;
+        
+        if (currentX > 0) {
+            card.style.boxShadow = `0 0 10px 2px rgba(76, 175, 80, ${opacity})`;
+        } else {
+            card.style.boxShadow = `0 0 10px 2px rgba(244, 67, 54, ${opacity})`;
+        }
+    }
+
+    function handleEnd(e) {
+        if (!isDragging) return;
+        isDragging = false;
+
+        if (Math.abs(currentX) > swipeThreshold) {
+            const liked = currentX > 0;
+            finishSwipe(liked);
+        } else {
+            resetCard();
+        }
+    }
+
+    window.toggleCard = function() {
+        const content = card.querySelector('.content');
+        content.style.transform = content.style.transform === 'rotateY(180deg)' ? 
+            'rotateY(0deg)' : 'rotateY(180deg)';
+    }
+
+    function resetCard() {
+        card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+        card.style.transform = 'translate(0, 0) rotate(0deg)';
+        card.style.boxShadow = 'none';
+    }
+
+    function finishSwipe(liked) {
+        const endX = liked ? window.innerWidth : -window.innerWidth;
+        card.style.transition = 'transform 0.3s ease';
+        card.style.transform = `translate(${endX}px, ${currentY}px) rotate(${liked ? 30 : -30}deg)`;
+        
+        setTimeout(() => submitSwipe(liked), 300);
+    }
+
+    function submitSwipe(liked) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = "{{ url_for('handle_swipe') }}";
+
+        const gameIdInput = document.createElement('input');
+        gameIdInput.type = 'hidden';
+        gameIdInput.name = 'game_id';
+        gameIdInput.value = "{{ games[0].id }}";
+        form.appendChild(gameIdInput);
+
+        const likedInput = document.createElement('input');
+        likedInput.type = 'hidden';
+        likedInput.name = 'liked';
+        likedInput.value = liked;
+        form.appendChild(likedInput);
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+});
+</script>
+
+<style>
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.flip-button {
+    background-color: #f3f7fe;
+    color: #3b82f6;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 100px;
+    height: 45px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.5s;
+}
+
+.flip-button:hover {
+    background-color: #3b82f6;
+    box-shadow: 0 0 0 5px #3b83f65f;
+    color: #fff;
+}
+
+.end-session-button {
+    background-color: #f3f7fe;
+    color: #3b82f6;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 100px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.5s;
+}
+
+.end-session-button:hover {
+    background-color: #3b82f6;
+    box-shadow: 0 0 0 5px #3b83f65f;
+    color: #fff;
+}
+
+.swipe-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.swipe-container::before,
+.swipe-container::after {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    top: 0;
+    z-index: -1;
+    opacity: 0.1;
+    transition: opacity 0.3s ease;
+}
+
+.swipe-container::before {
+    left: 0;
+    background-color: #f44336;
+}
+
+.swipe-container::after {
+    right: 0;
+    background-color: #4caf50;
+}
+
+.card-container {
+    position: relative;
+    width: 300px;
+    height: 400px;
+    margin: 20px auto;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    perspective: 1000px;
+    touch-action: none;
+    user-select: none;
+    cursor: grab;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.card:hover {
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.card:active {
+    cursor: grabbing;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    position: relative;
+}
+
+.front, .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    padding: 0;
+    display: block;
+}
+
+.back {
+    transform: rotateY(180deg);
+    padding: 20px;
+    background: #151515;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.back-content {
+    padding: 15px;
+    text-align: center;
+}
+
+.description {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 15px 0;
+    max-width: 90%;
+    margin: 15px auto;
+}
+h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.game-stats {
+    margin-top: auto;
+    padding: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+}
+</style>
+{% endblock %}

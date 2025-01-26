@@ -1,0 +1,111 @@
+<style>
+    /* Ensure the entire page spans the viewport */
+    html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Prevent scrollbars */
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center;    /* Center vertically */
+        background-color: #f0f0f0;
+        box-sizing: border-box; /* Prevent overflow caused by padding or borders */
+    }
+
+    /* Center the card */
+    .page-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%; /* Ensures the container spans the full viewport */
+        box-sizing: border-box; /* Prevent content overflow */
+    }
+
+    .card {
+        width: 300px; /* Adjust width as needed */
+        height: 450px; /* Adjust height as needed */
+        border-radius: 30px;
+        background: #872341;
+        box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    
+
+    .home-container {
+        text-align: center;
+    }
+
+    /* Button styling */
+    .custom-button {
+        padding: 17px 40px;
+        border-radius: 50px;
+        cursor: pointer;
+        border: 0;
+        background-color: #e17564;
+        box-shadow: rgba(214, 214, 214, 0.05) 0 0 8px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-size: 15px;
+        transition: all 0.5s ease;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .custom-button:hover {
+        letter-spacing: 3px;
+        background-color: #be3144;
+        color: hsl(0, 0%, 100%);
+        box-shadow: #ffffff;
+    }
+
+    .custom-button:active {
+        letter-spacing: 3px;
+        background-color: hsl(0, 0%, 96%);
+        color: hsl(0, 0%, 100%);
+        box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px;
+        transform: translateY(10px);
+        transition: 100ms;
+    }
+    h1 {
+        font-family: 'Roboto', sans-serif;
+        color: #f9f9f9; /* Replace with your desired color */
+        font-size: 2em; /* Optional: Adjust font size */
+        margin-bottom: 50px; /* Optional: Add spacing below */
+    }
+    
+    p {
+        color:#f9f9f9 ;
+    }
+</style>
+
+<div class="page-container">
+    <div class="card">
+        <h1>Board Game Matcher</h1>
+        <div class="home-container">
+        
+            
+            <button onclick="createSession()" class="custom-button">Create New Session</button>
+            <p>Or</p>
+            <a href="{{ url_for('login') }}" class="custom-button">Join Existing Session</a>
+        </div>
+    </div>
+</div>
+
+<script>
+async function createSession() {
+    const response = await fetch('/create_session', { method: 'POST' });
+    const data = await response.json();
+    alert('Your session code is: ' + data.code);
+    window.location.href = '/login';
+}
+</script>

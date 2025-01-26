@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Genres</title>
+  <style>
+    /* Genres page styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .genres-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+
+    .genres-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .genres-container .genre-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .genres-container .genre-option input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    .genres-container button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px 20px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .genres-container button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="genres-container">
+    <h2>Select 3 Genres</h2>
+    <div class="genre-option">
+      <input type="checkbox" id="genre1" name="genre1" value="Rock">
+      <label for="genre1">Rock</label>
+    </div>
+    <div class="genre-option">
+      <input type="checkbox" id="genre2" name="genre2" value="Pop">
+      <label for="genre2">Pop</label>
+    </div>
+    <div class="genre-option">
+      <input type="checkbox" id="genre3" name="genre3" value="Jazz">
+      <label for="genre3">Jazz</label>
+    </div>
+    <div class="genre-option">
+      <input type="checkbox" id="genre4" name="genre4" value="Classical">
+      <label for="genre4">Classical</label>
+    </div>
+    <div class="genre-option">
+      <input type="checkbox" id="genre5" name="genre5" value="Hip Hop">
+      <label for="genre5">Hip Hop</label>
+    </div>
+    <button>Submit</button>
+  </div>
+</body>
+</html>

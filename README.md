@@ -36,11 +36,13 @@ Follow these steps to set up and run SwipeBoard on your local machine:
 
 
 
-##Youtube URL link (Made by my teammate "Rush")
+## Youtube URL link (Made by my teammate "Rush")
 
 https://www.youtube.com/watch?v=qf8fNqQJBAA&authuser=0
 
+## Presentation Slides that was presented at "PlymHack"
 
+https://prezi.com/view/2MC9MGCMYUAkoYltazQI/
    
 
    

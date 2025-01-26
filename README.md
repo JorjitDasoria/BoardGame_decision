@@ -36,7 +36,7 @@ Follow these steps to set up and run SwipeBoard on your local machine:
 
 
 
-![Board Game Image](image/image1)
+![Screenshot](https://raw.githubusercontent.com/username/repository/main/images/image.png)
 
 
    

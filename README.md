@@ -36,7 +36,7 @@ Follow these steps to set up and run SwipeBoard on your local machine:
 
 
 
-![Board Game Image](Screenshot%202025-01-26%20011535.png)
+![Board Game Image](image/image1)
 
 
    
